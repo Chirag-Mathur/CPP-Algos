@@ -1,19 +1,29 @@
+<<<<<<< HEAD
 // C++ program to do range minimum query in O(1) time with O(n*n) 
 // extra space and O(n*n) preprocessing time. 
+=======
+
+>>>>>>> 4c746ef5536164f512fd2908d5880d37237422aa
 #include<bits/stdc++.h> 
 using namespace std; 
 #define MAX 500 
 
+<<<<<<< HEAD
 // lookup[i][j] is going to store index of minimum value in 
 // arr[i..j] 
 int lookup[MAX][MAX]; 
 
 // Structure to represent a query range 
+=======
+int lookup[MAX][MAX]; 
+
+>>>>>>> 4c746ef5536164f512fd2908d5880d37237422aa
 struct Query 
 { 
 	int L, R; 
 }; 
 
+<<<<<<< HEAD
 // Fills lookup array lookup[n][n] for all possible values of 
 // query ranges 
 void preprocess(int arr[], int n) 
@@ -55,6 +65,56 @@ void RMQ(int arr[], int n, Query q[], int m)
 } 
 
 // Driver program 
+=======
+void preprocess(int arr[], int n) 
+{ 
+	
+	for (int i = 0; i < n; i++) 
+		lookup[i][0] = i; 
+
+	for (int j=1; (1<<j)<=n; j++) 
+	{ 
+	
+		for (int i=0; (i+(1<<j)-1) < n; i++) 
+		{ 
+		
+			if (arr[lookup[i][j-1]] < arr[lookup[i + (1<<(j-1))][j-1]]) 
+				lookup[i][j] = lookup[i][j-1]; 
+			else
+				lookup[i][j] = lookup[i + (1 << (j-1))][j-1];	 
+		} 
+	} 
+} 
+
+
+int query(int arr[], int L, int R) 
+{ 
+	
+	int j = (int)log2(R-L+1); 
+
+	if (arr[lookup[L][j]] <= arr[lookup[R - (1<<j) + 1][j]]) 
+		return arr[lookup[L][j]]; 
+
+else return arr[lookup[R - (1<<j) + 1][j]]; 
+} 
+
+
+void RMQ(int arr[], int n, Query q[], int m) 
+{ 
+
+	preprocess(arr, n); 
+
+	for (int i=0; i<m; i++) 
+	{ 
+	
+		int L = q[i].L, R = q[i].R; 
+
+		cout << "Minimum of [" << L << ", "
+			<< R << "] is " << query(arr, L, R) << endl; 
+	} 
+} 
+
+>>>>>>> 4c746ef5536164f512fd2908d5880d37237422aa
 int main() 
 { 
 	int a[] = {7, 2, 3, 0, 5, 10, 3, 12, 18}; 
